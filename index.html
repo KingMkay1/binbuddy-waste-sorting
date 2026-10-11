@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f2">
+  <meta name="description" content="Find the right waste bin for your item, using the sorting rules for your building.">
+  <title>BinBuddy — Building Waste Sorting Assistant</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="BinBuddy home">
+      <span class="brand-mark" aria-hidden="true">♻</span>
+      <span>binbuddy<span class="brand-period">.</span></span>
+    </a>
+    <div class="topbar-note"><span class="status-dot" aria-hidden="true"></span> Your building, your sorting guide</div>
+    <button class="button button-quiet top-reset" id="reset-button" type="button">↺ <span>Reset demo</span></button>
+  </header>
+
+  <main id="main-content">
+    <section class="intro">
+      <div class="intro-copy">
+        <p class="eyebrow">LESS GUESSING, BETTER SORTING</p>
+        <h1>Not sure where<br class="desktop-break"> it goes?</h1>
+        <p class="intro-text">Tell us what you’re throwing away. We’ll find the right bin for <em>your</em> building.</p>
+      </div>
+      <div class="intro-art" aria-hidden="true">
+        <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">✦</span>
+        <div class="art-bin bin-green"><span>♻</span><i></i></div>
+        <div class="art-bin bin-yellow"><span>↗</span><i></i></div>
+        <div class="art-leaf">✿</div>
+      </div>
+    </section>
+
+    <section class="building-bar" aria-label="Choose your building">
+      <div class="building-icon" aria-hidden="true">⌂</div>
+      <div class="building-label">
+        <label for="building-select">I live at</label>
+        <select id="building-select" aria-describedby="demo-note"></select>
+      </div>
+      <span class="demo-tag">DEMO BUILDING</span>
+      <p id="demo-note" class="building-hint">Example rules only · check with your building team</p>
+    </section>
+
+    <div class="workspace-grid">
+      <section class="search-panel panel" aria-labelledby="search-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">QUICK LOOKUP</p>
+            <h2 id="search-heading">What are you tossing?</h2>
+          </div>
+          <span class="heading-emoji" aria-hidden="true">🔎</span>
+        </div>
+        <form id="search-form" role="search">
+          <label class="sr-only" for="item-search">Search for an item</label>
+          <div class="search-field">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <input id="item-search" name="item" type="search" placeholder="Try “pizza box” or “glass jar”" autocomplete="off" aria-autocomplete="list" aria-expanded="false" aria-controls="search-suggestions">
+            <button class="button button-primary search-submit" type="submit">Find my bin <span aria-hidden="true">→</span></button>
+          </div>
+          <ul class="suggestions" id="search-suggestions" role="listbox" aria-label="Matching items" hidden></ul>
+        </form>
+        <p class="search-hint">Try a common item, or browse by category below.</p>
+
+        <div class="category-heading">
+          <h3>Browse by category</h3>
+          <button class="text-button" id="show-all-button" type="button">Show all</button>
+        </div>
+        <div class="category-list" id="category-list" aria-label="Filter items by category"></div>
+        <div class="browse-heading">
+          <h3 id="browse-title">Popular items</h3>
+          <span id="browse-count" class="browse-count"></span>
+        </div>
+        <div class="item-list" id="item-list"></div>
+        <p class="empty-category" id="empty-category" hidden>No items in this category yet. Try another category or add a rule.</p>
+      </section>
+
+      <aside class="side-column">
+        <section class="result-panel panel" id="result-panel" aria-label="Your sorting answer" aria-live="polite">
+          <div class="result-placeholder" id="result-placeholder">
+            <div class="placeholder-icon" aria-hidden="true">♻</div>
+            <p class="eyebrow">YOUR SORTING ANSWER</p>
+            <h2>Your answer will<br>show up here</h2>
+            <p>Search for an item or choose one from the list to see your building’s instructions.</p>
+            <div class="placeholder-tip"><span aria-hidden="true">✳</span> The same item can have different rules in different buildings.</div>
+          </div>
+          <div class="result-content" id="result-content" hidden></div>
+        </section>
+
+        <section class="building-info panel" aria-labelledby="building-info-heading">
+          <div class="info-title-row">
+            <span class="info-icon" aria-hidden="true">⌂</span>
+            <div><p class="eyebrow">A FEW THINGS TO KNOW</p><h2 id="building-info-heading" tabindex="-1">Building notes</h2></div>
+          </div>
+          <p class="info-building-name" id="info-building-name"></p>
+          <ul class="guideline-list" id="guideline-list"></ul>
+          <p class="info-disclaimer">These are sample guidelines, not official local regulations. When in doubt, check with your building team.</p>
+        </section>
+
+        <section class="manage-panel panel" aria-labelledby="manage-heading">
+          <div class="manage-copy">
+            <span class="manage-icon" aria-hidden="true">✎</span>
+            <div><h2 id="manage-heading">Make it yours</h2><p>Add or update a rule for this building. Your changes stay on this device.</p></div>
+          </div>
+          <button class="button button-outline" id="manage-button" type="button">Manage demo rules <span aria-hidden="true">→</span></button>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="page-footer">
+      <span class="footer-mark" aria-hidden="true">♻</span>
+      <span>Small choices add up. Thanks for sorting thoughtfully.</span>
+      <span class="footer-demo">BinBuddy demonstration · Always confirm local rules</span>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <dialog class="rules-dialog" id="rules-dialog" aria-labelledby="dialog-heading">
+    <div class="dialog-header">
+      <div><p class="eyebrow">YOUR BUILDING, YOUR RULES</p><h2 id="dialog-heading">Manage sorting rules</h2></div>
+      <button class="icon-button" id="close-dialog" type="button" aria-label="Close">×</button>
+    </div>
+    <p class="dialog-intro">Add a new item or select an existing rule to update. Changes are saved only in this browser.</p>
+    <form id="rule-form">
+      <input type="hidden" id="rule-id">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="rule-item">Item name <span aria-hidden="true">*</span></label>
+          <input id="rule-item" required maxlength="60" placeholder="e.g. Coffee grounds">
+        </div>
+        <div class="form-field">
+          <label for="rule-category">Category <span aria-hidden="true">*</span></label>
+          <select id="rule-category" required></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="rule-bin">Bin name <span aria-hidden="true">*</span></label>
+          <input id="rule-bin" required maxlength="50" placeholder="e.g. Food scraps">
+        </div>
+        <div class="form-field">
+          <label for="rule-color">Bin colour <span aria-hidden="true">*</span></label>
+          <select id="rule-color" required>
+            <option value="green">Green</option><option value="blue">Blue</option><option value="yellow">Yellow</option>
+            <option value="brown">Brown</option><option value="black">Black</option><option value="red">Red</option>
+            <option value="grey">Grey</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="rule-instructions">Disposal instructions <span aria-hidden="true">*</span></label>
+        <textarea id="rule-instructions" required maxlength="240" rows="3" placeholder="Explain how to prepare and dispose of this item"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="rule-aliases">Also known as <span class="optional-label">(optional, comma-separated)</span></label>
+        <input id="rule-aliases" maxlength="160" placeholder="e.g. coffee waste, used grounds">
+      </div>
+      <div class="dialog-actions">
+        <button class="button button-quiet" id="cancel-rule" type="button">Cancel</button>
+        <button class="button button-outline" id="new-rule-button" type="button">Clear form</button>
+        <button class="button button-primary" type="submit">Save rule</button>
+      </div>
+    </form>
+    <div class="saved-rules-wrap">
+      <h3>Rules for <span id="rules-building-name"></span></h3>
+      <label class="sr-only" for="existing-rule-select">Choose a rule to edit</label>
+      <select id="existing-rule-select"><option value="">Choose a rule to edit…</option></select>
+    </div>
+  </dialog>
+</body>
+</html>
